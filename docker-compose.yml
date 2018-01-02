@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  db:
+    image: postgres:10.1
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=xaexohquaetiesoo
+      - POSTGRESQL_DB=sonar
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  sonarqube:
+    depends_on:
+       - db
+    links:
+      - db:db
+    image: sonarqube:latest
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=xaexohquaetiesoo
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+    ports:
+      - "10000:9000"
+      - "10092:9092"
+    volumes:
+      - sonarqube-data:/opt/sonarqube/extensions
+      - sonarqube-data:/opt/sonarqube/lib/bundled-plugins
+volumes:
+  db-data:
+  sonarqube-data:
